@@ -46,127 +46,123 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              FutureBuilder(
-                future: services.getMovies(page: page),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    movies = [...movies, ...snapshot.data!];
-                    movies = movies.toSet().toList();
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: movies.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.65,
-                      ),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) =>
-                                    MovieDetails(movie: movies[index]),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: services.getMovies(page: page),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  movies = [...movies, ...snapshot.data!];
+                  movies = movies.toSet().toList();
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: movies.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) =>
+                                  MovieDetails(movie: movies[index]),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Movie poster
+                            Container(
+                              height: size.height * 0.3,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    // ignore: deprecated_member_use
+                                    color: Colors.black.withOpacity(0.5),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      'https://image.tmdb.org/t/p/w500${movies[index].posterPath}'),
+                                  fit: BoxFit.fitHeight,
+                                ),
                               ),
-                            );
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // Movie poster
-                              Container(
-                                height: size.height * 0.3,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      // ignore: deprecated_member_use
-                                      color: Colors.black.withOpacity(0.5),
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://image.tmdb.org/t/p/w500${movies[index].posterPath}'),
-                                    fit: BoxFit.fitHeight,
+                            ),
+                            // Movie title
+                            Text(
+                              movies[index].title.toString(),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            //Movie rating
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  '${movies[index].voteCount}',
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
                                   ),
                                 ),
-                              ),
-                              // Movie title
-                              Text(
-                                movies[index].title.toString(),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              // Movie rating
-                              // const SizedBox(height: 5),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     const Icon(
-                              //       Icons.star,
-                              //       color: Colors.amber,
-                              //       size: 18,
-                              //     ),
-                              //     const SizedBox(width: 5),
-                              //     Text(
-                              //       '${movies[index].voteAverage}/10',
-                              //       style: const TextStyle(
-                              //         color: Colors.white70,
-                              //         fontSize: 14,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.amber,
-                      ),
-                    );
-                  }
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.amber,
+                    ),
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.amber,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                textStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                onPressed: () {
-                  setState(() {
-                    page++;
-                  });
-                },
-                child: const Text("Load More"),
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
+              onPressed: () {
+                setState(() {
+                  page++;
+                });
+              },
+              child: const Text("Load More"),
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );

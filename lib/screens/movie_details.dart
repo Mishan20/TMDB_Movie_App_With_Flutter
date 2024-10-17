@@ -114,6 +114,20 @@ class _MovieDetailsState extends State<MovieDetails> {
                                     ),
                                   ),
                                   const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.star,
+                                          color: Colors.yellow),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "${widget.movie.voteAverage}/10",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
