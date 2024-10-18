@@ -18,7 +18,7 @@ class _MovieDetailsState extends State<MovieDetails> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: const EdgeInsets.only(top: 1),
       child: Scaffold(
         backgroundColor:
             Colors.grey[900], // Dark background for a cinematic feel
@@ -113,7 +113,6 @@ class _MovieDetailsState extends State<MovieDetails> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
                                   Row(
                                     children: [
                                       const Icon(Icons.star,
@@ -164,9 +163,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              const SizedBox(height: 10),
                               SizedBox(
-                                height: 120,
+                                height: 140,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: data.company!.length,
